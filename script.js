@@ -17,13 +17,11 @@ function toggleTarget(){
 
 if(targetVisible){
 
-// hide target
 zones.innerHTML = ""
 targetVisible = false
 
 }else{
 
-// show target
 zones.innerHTML = ""
 
 createZone(0,40,"#ff4d4d")
@@ -79,7 +77,7 @@ zones.appendChild(zone)
 
 }
 
-document.addEventListener("mousemove", e => {
+function moveNeedle(clientX, clientY){
 
 if(targetVisible) return
 
@@ -88,12 +86,23 @@ let rect = dial.getBoundingClientRect()
 let cx = rect.left + rect.width/2
 let cy = rect.bottom
 
-let dx = e.clientX - cx
-let dy = cy - e.clientY
+let dx = clientX - cx
+let dy = cy - clientY
 
 let angle = Math.atan2(dx,dy) * 180/Math.PI
 angle = Math.max(-90,Math.min(90,angle))
 
 needle.setAttribute("transform",`rotate(${angle} 250 250)`)
 
+}
+
+// Desktop mouse
+document.addEventListener("mousemove", e=>{
+moveNeedle(e.clientX, e.clientY)
+})
+
+// Phone touch
+document.addEventListener("touchmove", e=>{
+let touch = e.touches[0]
+moveNeedle(touch.clientX, touch.clientY)
 })
