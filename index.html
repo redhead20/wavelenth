@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wavelength</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Wavelength</h1>
+
+<div class="board">
+
+<svg viewBox="0 0 500 300" id="dial">
+
+<!-- background arc -->
+<path d="M50 250 A200 200 0 0 1 450 250"
+stroke="#3a3a3a"
+stroke-width="70"
+fill="none"/>
+
+<defs>
+<linearGradient id="spectrum">
+<stop offset="0%" stop-color="#2f6fff"/>
+<stop offset="25%" stop-color="#00c8ff"/>
+<stop offset="50%" stop-color="#ffe95e"/>
+<stop offset="75%" stop-color="#ff9f43"/>
+<stop offset="100%" stop-color="#ff4d4d"/>
+</linearGradient>
+</defs>
+
+<!-- score zones -->
+<g id="zones"></g>
+
+<!-- needle -->
+<line id="needle"
+x1="250"
+y1="250"
+x2="250"
+y2="60"
+stroke="white"
+stroke-width="5"/>
+
+<!-- center pivot -->
+<circle cx="250" cy="250" r="8" fill="white"/>
+
+</svg>
+
+</div>
+
+<div class="controls">
+<button onclick="newRound()">New Round</button>
+<button onclick="toggleTarget()">Show / Hide Target</button>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
