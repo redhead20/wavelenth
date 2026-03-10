@@ -11,11 +11,12 @@ function newRound(){
 
 targetAngle = Math.random()*180 - 90
 zones.innerHTML = ""
+
 targetVisible = false
 needleLocked = false
 currentAngle = 0
 
-needle.setAttribute("transform",`rotate(0 250 250)`)
+needle.setAttribute("transform","rotate(0 250 250)")
 
 }
 
@@ -42,7 +43,7 @@ createZone(28,10,"#00ff95")
 
 targetVisible = true
 
-// freeze guess while viewing
+// freeze guess
 needleLocked = true
 
 }
@@ -103,9 +104,14 @@ let cy = rect.bottom
 let dx = e.clientX - cx
 let dy = cy - e.clientY
 
-currentAngle = Math.atan2(dx,dy) * 180/Math.PI
-currentAngle = Math.max(-90,Math.min(90,currentAngle))
+let angle = Math.atan2(dx,dy) * 180/Math.PI
+angle = Math.max(-90,Math.min(90,angle))
 
-needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
+currentAngle = angle
+
+needle.setAttribute(
+"transform",
+`rotate(${currentAngle} 250 250)`
+)
 
 })
