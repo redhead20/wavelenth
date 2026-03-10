@@ -1,5 +1,6 @@
 let targetAngle = 0
 let targetVisible = false
+let currentAngle = 0   // stores needle position
 
 const zones = document.getElementById("zones")
 const needle = document.getElementById("needle")
@@ -10,6 +11,9 @@ function newRound(){
 targetAngle = Math.random()*180 - 90
 zones.innerHTML = ""
 targetVisible = false
+currentAngle = 0
+
+needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
 
 }
 
@@ -17,11 +21,13 @@ function toggleTarget(){
 
 if(targetVisible){
 
+// hide target
 zones.innerHTML = ""
 targetVisible = false
 
 }else{
 
+// show target
 zones.innerHTML = ""
 
 createZone(0,40,"#ff4d4d")
@@ -77,9 +83,9 @@ zones.appendChild(zone)
 
 }
 
-function moveNeedle(clientX, clientY){
+function moveNeedle(clientX,clientY){
 
-if(targetVisible) return
+if(targetVisible) return   // lock when target visible
 
 let rect = dial.getBoundingClientRect()
 
@@ -92,17 +98,19 @@ let dy = cy - clientY
 let angle = Math.atan2(dx,dy) * 180/Math.PI
 angle = Math.max(-90,Math.min(90,angle))
 
-needle.setAttribute("transform",`rotate(${angle} 250 250)`)
+currentAngle = angle
+
+needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
 
 }
 
-// Desktop mouse
-document.addEventListener("mousemove", e=>{
-moveNeedle(e.clientX, e.clientY)
+// Desktop
+document.addEventListener("mousemove",e=>{
+moveNeedle(e.clientX,e.clientY)
 })
 
-// Phone touch
-document.addEventListener("touchmove", e=>{
+// Phone
+document.addEventListener("touchmove",e=>{
 let touch = e.touches[0]
-moveNeedle(touch.clientX, touch.clientY)
+moveNeedle(touch.clientX,touch.clientY)
 })
