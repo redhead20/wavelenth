@@ -1,18 +1,21 @@
 let targetAngle = 0
 let targetVisible = false
 let needleLocked = false
+let currentAngle = 0
 
 const zones = document.getElementById("zones")
 const needle = document.getElementById("needle")
+const dial = document.getElementById("dial")
 
 function newRound(){
 
 targetAngle = Math.random()*180 - 90
 zones.innerHTML = ""
 targetVisible = false
-
-// unlock needle for new guess
 needleLocked = false
+currentAngle = 0
+
+needle.setAttribute("transform",`rotate(0 250 250)`)
 
 }
 
@@ -20,11 +23,16 @@ function toggleTarget(){
 
 if(targetVisible){
 
+// hide target
 zones.innerHTML = ""
 targetVisible = false
 
+// allow adjustments again
+needleLocked = false
+
 }else{
 
+// show target
 zones.innerHTML = ""
 
 createZone(0,40,"#ff4d4d")
@@ -33,6 +41,9 @@ createZone(20,20,"#ffe95e")
 createZone(28,10,"#00ff95")
 
 targetVisible = true
+
+// freeze guess while viewing
+needleLocked = true
 
 }
 
@@ -80,12 +91,11 @@ zones.appendChild(zone)
 
 }
 
-document.addEventListener("mousemove",e=>{
+document.addEventListener("mousemove", e => {
 
-// stop moving if locked
 if(needleLocked) return
 
-let rect = document.getElementById("dial").getBoundingClientRect()
+let rect = dial.getBoundingClientRect()
 
 let cx = rect.left + rect.width/2
 let cy = rect.bottom
@@ -93,20 +103,9 @@ let cy = rect.bottom
 let dx = e.clientX - cx
 let dy = cy - e.clientY
 
-let angle = Math.atan2(dx,dy)*180/Math.PI
-angle = Math.max(-90,Math.min(90,angle))
+currentAngle = Math.atan2(dx,dy) * 180/Math.PI
+currentAngle = Math.max(-90,Math.min(90,currentAngle))
 
-needle.setAttribute("transform",`rotate(${angle} 250 250)`)
-
-})
-
-// lock guess permanently until new round
-const dial = document.getElementById("dial")
-
-dial.addEventListener("click",()=>{
-
-if(!needleLocked){
-needleLocked = true
-}
+needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
 
 })
