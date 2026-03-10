@@ -1,6 +1,6 @@
 let targetAngle = 0
 let targetVisible = false
-let currentAngle = 0   // stores needle position
+let currentAngle = 0
 
 const zones = document.getElementById("zones")
 const needle = document.getElementById("needle")
@@ -13,21 +13,21 @@ zones.innerHTML = ""
 targetVisible = false
 currentAngle = 0
 
-needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
-
+needle.setAttribute("transform","rotate(0 250 250)")
 }
 
-function toggleTarget(){
+function toggleTarget(e){
+
+// stop the button tap from triggering dial movement
+if(e) e.stopPropagation()
 
 if(targetVisible){
 
-// hide target
 zones.innerHTML = ""
 targetVisible = false
 
 }else{
 
-// show target
 zones.innerHTML = ""
 
 createZone(0,40,"#ff4d4d")
@@ -36,9 +36,7 @@ createZone(20,20,"#ffe95e")
 createZone(28,10,"#00ff95")
 
 targetVisible = true
-
 }
-
 }
 
 function createZone(radiusOffset,width,color){
@@ -80,12 +78,11 @@ zone.setAttribute("d",path)
 zone.setAttribute("fill",color)
 
 zones.appendChild(zone)
-
 }
 
 function moveNeedle(clientX,clientY){
 
-if(targetVisible) return   // lock when target visible
+if(targetVisible) return
 
 let rect = dial.getBoundingClientRect()
 
@@ -101,16 +98,19 @@ angle = Math.max(-90,Math.min(90,angle))
 currentAngle = angle
 
 needle.setAttribute("transform",`rotate(${currentAngle} 250 250)`)
-
 }
 
-// Desktop
-document.addEventListener("mousemove",e=>{
+/* Desktop */
+dial.addEventListener("mousemove",e=>{
 moveNeedle(e.clientX,e.clientY)
 })
 
-// Phone
-document.addEventListener("touchmove",e=>{
+/* Phone */
+dial.addEventListener("touchmove",e=>{
+
+if(targetVisible) return
+
 let touch = e.touches[0]
 moveNeedle(touch.clientX,touch.clientY)
+
 })
